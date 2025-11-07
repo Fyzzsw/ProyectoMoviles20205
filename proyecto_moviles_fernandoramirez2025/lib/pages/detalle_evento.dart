@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class DetalleEvento extends StatelessWidget {
-  const DetalleEvento({super.key});
+  const DetalleEvento({super.key, required this.eventId});
+  final String eventId;
 
   @override
   Widget build(BuildContext context) {

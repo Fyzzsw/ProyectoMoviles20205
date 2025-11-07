@@ -5,6 +5,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:proyecto_moviles_fernandoramirez2025/pages/agregar_evento.dart';
+import 'package:proyecto_moviles_fernandoramirez2025/pages/detalle_evento.dart';
 import 'package:proyecto_moviles_fernandoramirez2025/services/auth_service.dart';
 import 'package:proyecto_moviles_fernandoramirez2025/services/fs_service.dart';
 
@@ -85,6 +86,14 @@ class HomePage extends StatelessWidget {
                           ],
                         ),
                         child: ListTile(
+                          onTap: () async {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetalleEvento(eventId: evento.id),
+                              ),
+                            );
+                          },
                           leading: Icon(Icons.event, color: Colors.red.shade900),
                           title: Text(evento["titulo"]),
                           subtitle: Text(

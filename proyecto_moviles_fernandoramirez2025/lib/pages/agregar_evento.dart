@@ -57,7 +57,7 @@ class _AgregarEventoState extends State<AgregarEvento> {
                   return null;
                 },
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               //Fecha
               InkWell(
                 onTap: pickFecha,
@@ -71,7 +71,7 @@ class _AgregarEventoState extends State<AgregarEvento> {
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               //Lugar
               TextFormField(
                 controller: lugarCtrl,
@@ -83,7 +83,7 @@ class _AgregarEventoState extends State<AgregarEvento> {
                   return null;
                 },
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
 
               //Categoria
               FutureBuilder<QuerySnapshot>(
@@ -116,7 +116,7 @@ class _AgregarEventoState extends State<AgregarEvento> {
                   );
                 },
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               //Autor
               TextFormField(
                 controller: autorCtrl,
@@ -128,7 +128,7 @@ class _AgregarEventoState extends State<AgregarEvento> {
                   return null;
                 },
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               SizedBox(
                 height: 48,
                 child: FilledButton(

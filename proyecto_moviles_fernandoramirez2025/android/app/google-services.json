@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "379587302365-er1g14eqgfccf86pobiermt7lum1pc02.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.proyecto_moviles_fernandoramirez2025",
+            "certificate_hash": "d05cbc486ff04d94e7f6446befe57b7f96f38a37"
+          }
+        },
+        {
           "client_id": "379587302365-h39s7jhvekmcnvatkhnnvnkat21uesr7.apps.googleusercontent.com",
           "client_type": 3
         }

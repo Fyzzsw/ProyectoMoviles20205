@@ -1,0 +1,168 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:proyecto_moviles_fernandoramirez2025/services/fs_service.dart';
+
+class AgregarEvento extends StatefulWidget {
+  const AgregarEvento({super.key});
+
+  @override
+  State<AgregarEvento> createState() => _AgregarEventoState();
+}
+
+class _AgregarEventoState extends State<AgregarEvento> {
+  final formKey = GlobalKey<FormState>();
+
+  final TextEditingController tituloCtrl = TextEditingController();
+  final TextEditingController lugarCtrl = TextEditingController();
+  final TextEditingController autorCtrl = TextEditingController();
+  DateTime? fechaSeleccionada;
+  String? categoriaSeleccionada;
+
+  Future<void> pickFecha() async {
+    final now = DateTime.now();
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: fechaSeleccionada ?? now,
+      firstDate: DateTime(now.year - 1),
+      lastDate: DateTime(now.year + 3),
+      helpText: 'Selecciona fecha del evento',
+    );
+    if (picked != null) {
+      setState(() => fechaSeleccionada = picked);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.red.shade900,
+        title: Text('Agregar evento', style: TextStyle(color: Colors.white)),
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: Form(
+          key: formKey,
+          child: ListView(
+            children: [
+              //Titulo
+              TextFormField(
+                controller: tituloCtrl,
+                decoration: InputDecoration(labelText: 'Título', prefixIcon: Icon(Icons.title)),
+                validator: (titulo) {
+                  if (titulo!.isEmpty) {
+                    return "Ingresa el título";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 12),
+              //Fecha
+              InkWell(
+                onTap: pickFecha,
+                borderRadius: BorderRadius.circular(12),
+                child: InputDecorator(
+                  decoration: InputDecoration(labelText: 'Fecha', prefixIcon: Icon(Icons.event)),
+                  child: Text(
+                    fechaSeleccionada == null
+                        ? 'Toca para seleccionar'
+                        : '${fechaSeleccionada!.day.toString().padLeft(2, '0')}/${fechaSeleccionada!.month.toString().padLeft(2, '0')}/${fechaSeleccionada!.year}',
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              //Lugar
+              TextFormField(
+                controller: lugarCtrl,
+                decoration: InputDecoration(labelText: 'Lugar', prefixIcon: Icon(Icons.place)),
+                validator: (lugar) {
+                  if (lugar!.isEmpty) {
+                    return "Ingresa el lugar";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 12),
+
+              //Categoria
+              FutureBuilder<QuerySnapshot>(
+                future: FsService().categorias(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData || snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: LinearProgressIndicator());
+                  }
+                  var categorias = snapshot.data!.docs;
+                  return DropdownButtonFormField(
+                    validator: (categoria) {
+                      if (categoriaSeleccionada == null) {
+                        return 'Selecciona una categoría';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Categoría',
+                      prefixIcon: Icon(Icons.category),
+                    ),
+                    items: categorias.map((categoria) {
+                      return DropdownMenuItem<String>(
+                        value: categoria['nombre'],
+                        child: Text(categoria['nombre'].toString()),
+                      );
+                    }).toList(),
+                    onChanged: (valor) {
+                      categoriaSeleccionada = valor;
+                    },
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+              //Autor
+              TextFormField(
+                controller: autorCtrl,
+                decoration: InputDecoration(labelText: 'Autor', prefixIcon: Icon(Icons.person)),
+                validator: (autor) {
+                  if (autor == null || autor.trim().isEmpty) {
+                    return 'Ingresa el autor';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 12),
+              SizedBox(
+                height: 48,
+                child: FilledButton(
+                  style: FilledButton.styleFrom(backgroundColor: Colors.red.shade900),
+                  onPressed: () async {
+                    if (formKey.currentState!.validate()) {
+                      if (fechaSeleccionada == null) {
+                        ScaffoldMessenger.of(
+                          context,
+                        ).showSnackBar(SnackBar(content: Text('Selecciona la fecha del evento')));
+                        return;
+                      }
+                      await FsService().agregarEvento(
+                        tituloCtrl.text.trim(),
+                        fechaSeleccionada!,
+                        categoriaSeleccionada!,
+                        lugarCtrl.text.trim(),
+                        autorCtrl.text.trim(),
+                      );
+                    }
+                    ;
+
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Guardar evento',
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

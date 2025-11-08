@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:proyecto_moviles_fernandoramirez2025/services/fs_service.dart';
+import "package:cloud_firestore/cloud_firestore.dart";
+import "package:flutter/material.dart";
+import "package:proyecto_moviles_fernandoramirez2025/services/fs_service.dart";
 
 class AgregarEvento extends StatefulWidget {
   const AgregarEvento({super.key});
@@ -25,7 +25,7 @@ class _AgregarEventoState extends State<AgregarEvento> {
       initialDate: fechaSeleccionada ?? now,
       firstDate: DateTime(now.year - 1),
       lastDate: DateTime(now.year + 3),
-      helpText: 'Selecciona fecha del evento',
+      helpText: "Selecciona fecha del evento",
     );
     if (picked != null) {
       setState(() => fechaSeleccionada = picked);
@@ -37,7 +37,7 @@ class _AgregarEventoState extends State<AgregarEvento> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red.shade900,
-        title: Text('Agregar evento', style: TextStyle(color: Colors.white)),
+        title: Text("Agregar evento", style: TextStyle(color: Colors.white)),
         iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Padding(
@@ -49,7 +49,7 @@ class _AgregarEventoState extends State<AgregarEvento> {
               //Titulo
               TextFormField(
                 controller: tituloCtrl,
-                decoration: InputDecoration(labelText: 'Título', prefixIcon: Icon(Icons.title)),
+                decoration: InputDecoration(labelText: "Título", prefixIcon: Icon(Icons.title)),
                 validator: (titulo) {
                   if (titulo!.isEmpty) {
                     return "Ingresa el título";
@@ -63,11 +63,11 @@ class _AgregarEventoState extends State<AgregarEvento> {
                 onTap: pickFecha,
                 borderRadius: BorderRadius.circular(12),
                 child: InputDecorator(
-                  decoration: InputDecoration(labelText: 'Fecha', prefixIcon: Icon(Icons.event)),
+                  decoration: InputDecoration(labelText: "Fecha", prefixIcon: Icon(Icons.event)),
                   child: Text(
                     fechaSeleccionada == null
-                        ? 'Toca para seleccionar'
-                        : '${fechaSeleccionada!.day.toString().padLeft(2, '0')}/${fechaSeleccionada!.month.toString().padLeft(2, '0')}/${fechaSeleccionada!.year}',
+                        ? "Toca para seleccionar"
+                        : "${fechaSeleccionada!.day.toString().padLeft(2, "0")}/${fechaSeleccionada!.month.toString().padLeft(2, "0")}/${fechaSeleccionada!.year}",
                   ),
                 ),
               ),
@@ -75,7 +75,7 @@ class _AgregarEventoState extends State<AgregarEvento> {
               //Lugar
               TextFormField(
                 controller: lugarCtrl,
-                decoration: InputDecoration(labelText: 'Lugar', prefixIcon: Icon(Icons.place)),
+                decoration: InputDecoration(labelText: "Lugar", prefixIcon: Icon(Icons.place)),
                 validator: (lugar) {
                   if (lugar!.isEmpty) {
                     return "Ingresa el lugar";
@@ -96,18 +96,18 @@ class _AgregarEventoState extends State<AgregarEvento> {
                   return DropdownButtonFormField(
                     validator: (categoria) {
                       if (categoriaSeleccionada == null) {
-                        return 'Selecciona una categoría';
+                        return "Selecciona una categoría";
                       }
                       return null;
                     },
                     decoration: InputDecoration(
-                      labelText: 'Categoría',
+                      labelText: "Categoría",
                       prefixIcon: Icon(Icons.category),
                     ),
                     items: categorias.map((categoria) {
                       return DropdownMenuItem<String>(
-                        value: categoria['nombre'],
-                        child: Text(categoria['nombre'].toString()),
+                        value: categoria["nombre"],
+                        child: Text(categoria["nombre"].toString()),
                       );
                     }).toList(),
                     onChanged: (valor) {
@@ -120,10 +120,10 @@ class _AgregarEventoState extends State<AgregarEvento> {
               //Autor
               TextFormField(
                 controller: autorCtrl,
-                decoration: InputDecoration(labelText: 'Autor', prefixIcon: Icon(Icons.person)),
+                decoration: InputDecoration(labelText: "Autor", prefixIcon: Icon(Icons.person)),
                 validator: (autor) {
-                  if (autor == null || autor.trim().isEmpty) {
-                    return 'Ingresa el autor';
+                  if (autor!.isEmpty) {
+                    return "Ingresa el autor";
                   }
                   return null;
                 },
@@ -138,7 +138,7 @@ class _AgregarEventoState extends State<AgregarEvento> {
                       if (fechaSeleccionada == null) {
                         ScaffoldMessenger.of(
                           context,
-                        ).showSnackBar(SnackBar(content: Text('Selecciona la fecha del evento')));
+                        ).showSnackBar(SnackBar(content: Text("Selecciona la fecha del evento")));
                         return;
                       }
                       await FsService().agregarEvento(
@@ -148,13 +148,11 @@ class _AgregarEventoState extends State<AgregarEvento> {
                         lugarCtrl.text.trim(),
                         autorCtrl.text.trim(),
                       );
+                      Navigator.pop(context);
                     }
-                    ;
-
-                    Navigator.pop(context);
                   },
                   child: Text(
-                    'Guardar evento',
+                    "Guardar evento",
                     style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),

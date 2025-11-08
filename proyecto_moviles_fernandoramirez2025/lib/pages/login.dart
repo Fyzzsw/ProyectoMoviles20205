@@ -1,5 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import "package:firebase_auth/firebase_auth.dart";
+import "package:flutter/material.dart";
+import "package:proyecto_moviles_fernandoramirez2025/services/auth_service.dart";
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -11,7 +12,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final TextEditingController emailCtrl = TextEditingController();
   final TextEditingController passCtrl = TextEditingController();
-  String msgError = '';
+  String msgError = "";
 
   @override
   void dispose() {
@@ -42,7 +43,7 @@ class _LoginState extends State<Login> {
                 TextFormField(
                   controller: emailCtrl,
                   decoration: InputDecoration(
-                    labelText: 'Email',
+                    labelText: "Email",
                     labelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -54,50 +55,79 @@ class _LoginState extends State<Login> {
                     labelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.only(top: 10),
-                  width: double.infinity,
-                  child: FilledButton(
-                    style: ButtonStyle(
-                      backgroundColor: WidgetStatePropertyAll(Colors.red.shade900),
-                    ),
+                Column(
+                  children: [
+                    // Container(
+                    //   padding: EdgeInsets.only(top: 10),
+                    //   width: double.infinity,
+                    //   child: FilledButton(
+                    //     style: ButtonStyle(
+                    //       backgroundColor: WidgetStatePropertyAll(Colors.red.shade900),
+                    //     ),
 
-                    onPressed: () async {
-                      try {
-                        await FirebaseAuth.instance.signInWithEmailAndPassword(
-                          email: emailCtrl.text.trim(),
-                          password: passCtrl.text.trim(),
-                        );
-                      } on FirebaseAuthException catch (ex) {
-                        setState(() {
-                          switch (ex.code) {
-                            case 'channel-error':
-                              msgError = 'Ingrese sus credenciales';
-                              break;
-                            case 'invalid-email':
-                              msgError = 'Email no válido';
-                              break;
-                            case 'invalid-credential':
-                              msgError = 'Credenciales no válidas';
-                              break;
-                            case 'user-disabled':
-                              msgError = 'Usuario deshabilitado';
-                              break;
-                            case 'too-many-requests':
-                              msgError =
-                                  'Demasiados intentos. Bloqueado temporalmente, espera y vuelve a intentar.';
-                              break;
-                            default:
-                              msgError = 'Error desconocido';
-                          }
-                        });
-                      }
-                    },
-                    child: Text(
-                      'Iniciar Sesión',
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    //     onPressed: () async {
+                    //       try {
+                    //         await FirebaseAuth.instance.signInWithEmailAndPassword(
+                    //           email: emailCtrl.text.trim(),
+                    //           password: passCtrl.text.trim(),
+                    //         );
+                    //       } on FirebaseAuthException catch (ex) {
+                    //         setState(() {
+                    //           switch (ex.code) {
+                    //             case "channel-error":
+                    //               msgError = "Ingrese sus credenciales";
+                    //               break;
+                    //             case "invalid-email":
+                    //               msgError = "Email no válido";
+                    //               break;
+                    //             case "invalid-credential":
+                    //               msgError = "Credenciales no válidas";
+                    //               break;
+                    //             case "user-disabled":
+                    //               msgError = "Usuario deshabilitado";
+                    //               break;
+                    //             case "too-many-requests":
+                    //               msgError =
+                    //                   "Demasiados intentos. Bloqueado temporalmente, espera y vuelve a intentar.";
+                    //               break;
+                    //             default:
+                    //               msgError = "Error desconocido";
+                    //           }
+                    //         });
+                    //       }
+                    //     },
+                    //     child: Text(
+                    //       "Iniciar Sesión",
+                    //       style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    //     ),
+                    //   ),
+                    // ),
+
+                    //boton de google
+                    FilledButton(
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(Colors.red.shade900),
+                      ),
+                      onPressed: () async {
+                        try {
+                          final userCredential = await AuthService().signInWithGoogle();
+
+                          if (userCredential != null) {}
+                        } catch (ex) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Error al iniciar sesión con Google: $ex")),
+                          );
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          Icon(Icons.login_rounded),
+                          SizedBox(width: 8),
+                          Text("Inicie sesion con google"),
+                        ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
                 Container(
                   width: double.infinity,

@@ -1,13 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:intl/intl.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:proyecto_moviles_fernandoramirez2025/pages/agregar_evento.dart';
-import 'package:proyecto_moviles_fernandoramirez2025/pages/detalle_evento.dart';
-import 'package:proyecto_moviles_fernandoramirez2025/services/auth_service.dart';
-import 'package:proyecto_moviles_fernandoramirez2025/services/fs_service.dart';
+import "package:cloud_firestore/cloud_firestore.dart";
+import "package:firebase_auth/firebase_auth.dart";
+import "package:flutter/material.dart";
+import "package:flutter_slidable/flutter_slidable.dart";
+import "package:intl/intl.dart";
+import "package:material_design_icons_flutter/material_design_icons_flutter.dart";
+import "package:proyecto_moviles_fernandoramirez2025/pages/agregar_evento.dart";
+import "package:proyecto_moviles_fernandoramirez2025/pages/detalle_evento.dart";
+import "package:proyecto_moviles_fernandoramirez2025/services/auth_service.dart";
+import "package:proyecto_moviles_fernandoramirez2025/services/fs_service.dart";
+import "package:proyecto_moviles_fernandoramirez2025/utils/util_confirmacion.dart";
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -18,14 +19,14 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.red.shade900,
         title: Row(
-          children: [Text('Inicio', style: TextStyle(color: Colors.white))],
+          children: [Text("Inicio", style: TextStyle(color: Colors.white))],
         ),
         leading: Icon(Icons.home, color: Colors.white),
         actions: [
           PopupMenuButton(
             iconColor: Colors.white,
             itemBuilder: (context) => [
-              PopupMenuItem(value: 'logout', child: Text('Cerrar Sesion')),
+              PopupMenuItem(value: "logout", child: Text("Cerrar Sesion")),
             ],
             onSelected: (value) => {FirebaseAuth.instance.signOut()},
           ),
@@ -45,7 +46,7 @@ class HomePage extends StatelessWidget {
                   return CircularProgressIndicator();
                 } else {
                   return Text(
-                    'Bienvenido ${snapshot.data?.email}',
+                    "Bienvenido ${snapshot.data?.email}",
                     style: TextStyle(fontSize: 15, color: Colors.white),
                   );
                 }
@@ -64,7 +65,7 @@ class HomePage extends StatelessWidget {
                     return Center(child: CircularProgressIndicator());
                   }
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    return Center(child: Text('No hay eventos'));
+                    return Center(child: Text("No hay eventos"));
                   }
                   return ListView.separated(
                     separatorBuilder: (context, index) => Divider(),
@@ -77,7 +78,14 @@ class HomePage extends StatelessWidget {
                           children: [
                             SlidableAction(
                               onPressed: (context) async {
-                                await FsService().eliminarEvento(evento.id);
+                                var confirmar = await UtilConfirmacion.mostrarDialogoConfirmacion(
+                                  context,
+                                  "Confirmar eliminación",
+                                  "¿Estás seguro de que deseas eliminar este evento?",
+                                );
+                                if (confirmar) {
+                                  await FsService().eliminarEvento(evento.id);
+                                }
                               },
                               icon: MdiIcons.trashCan,
                               foregroundColor: Colors.white,
@@ -98,8 +106,8 @@ class HomePage extends StatelessWidget {
                           title: Text(evento["titulo"]),
                           subtitle: Text(
                             DateFormat(
-                              'dd/MM/yyyy HH:mm',
-                              'es_CL',
+                              "dd/MM/yyyy HH:mm",
+                              "es_CL",
                             ).format(evento["fecha"].toDate()),
                           ),
                         ),

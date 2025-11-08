@@ -1,16 +1,16 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import "package:cloud_firestore/cloud_firestore.dart";
 
 class FsService {
   Stream<QuerySnapshot> eventos() {
-    return FirebaseFirestore.instance.collection('eventos').snapshots();
+    return FirebaseFirestore.instance.collection("eventos").snapshots();
   }
 
   Future<void> eliminarEvento(String id) {
-    return FirebaseFirestore.instance.collection('eventos').doc(id).delete();
+    return FirebaseFirestore.instance.collection("eventos").doc(id).delete();
   }
 
   Future<QuerySnapshot> categorias() {
-    return FirebaseFirestore.instance.collection('categorias').orderBy('nombre').get();
+    return FirebaseFirestore.instance.collection("categorias").orderBy("nombre").get();
   }
 
   Future<void> agregarEvento(
@@ -20,16 +20,16 @@ class FsService {
     String lugar,
     String autor,
   ) {
-    return FirebaseFirestore.instance.collection('eventos').doc().set({
-      'titulo': titulo,
-      'fecha': fecha,
-      'categoria': categoria,
-      'lugar': lugar,
-      'autor': autor,
+    return FirebaseFirestore.instance.collection("eventos").doc().set({
+      "titulo": titulo,
+      "fecha": fecha,
+      "categoria": categoria,
+      "lugar": lugar,
+      "autor": autor,
     });
   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>> eventoId(String id) {
-    return FirebaseFirestore.instance.collection('eventos').doc(id).get();
+    return FirebaseFirestore.instance.collection("eventos").doc(id).get();
   }
 }

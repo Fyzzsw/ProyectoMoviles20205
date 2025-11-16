@@ -40,124 +40,146 @@ class _AgregarEventoState extends State<AgregarEvento> {
         title: Text("Agregar evento", style: TextStyle(color: Colors.white)),
         iconTheme: IconThemeData(color: Colors.white),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(20),
-        child: Form(
-          key: formKey,
-          child: ListView(
-            children: [
-              //Titulo
-              TextFormField(
-                controller: tituloCtrl,
-                decoration: InputDecoration(labelText: "Título", prefixIcon: Icon(Icons.title)),
-                validator: (titulo) {
-                  if (titulo!.isEmpty) {
-                    return "Ingresa el título";
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 12),
-              //Fecha
-              InkWell(
-                onTap: pickFecha,
-                borderRadius: BorderRadius.circular(12),
-                child: InputDecorator(
-                  decoration: InputDecoration(labelText: "Fecha", prefixIcon: Icon(Icons.event)),
-                  child: Text(
-                    fechaSeleccionada == null
-                        ? "Toca para seleccionar"
-                        : "${fechaSeleccionada!.day.toString().padLeft(2, "0")}/${fechaSeleccionada!.month.toString().padLeft(2, "0")}/${fechaSeleccionada!.year}",
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(image: AssetImage('assets/agregar.jpg'), fit: BoxFit.cover),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Form(
+            key: formKey,
+            child: ListView(
+              children: [
+                //Titulo
+                TextFormField(
+                  controller: tituloCtrl,
+                  decoration: InputDecoration(
+                    labelText: "Título",
+                    prefixIcon: Icon(Icons.title),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                   ),
-                ),
-              ),
-              SizedBox(height: 12),
-              //Lugar
-              TextFormField(
-                controller: lugarCtrl,
-                decoration: InputDecoration(labelText: "Lugar", prefixIcon: Icon(Icons.place)),
-                validator: (lugar) {
-                  if (lugar!.isEmpty) {
-                    return "Ingresa el lugar";
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 12),
-
-              //Categoria
-              FutureBuilder<QuerySnapshot>(
-                future: FsService().categorias(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData || snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: LinearProgressIndicator());
-                  }
-                  var categorias = snapshot.data!.docs;
-                  return DropdownButtonFormField(
-                    validator: (categoria) {
-                      if (categoriaSeleccionada == null) {
-                        return "Selecciona una categoría";
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      labelText: "Categoría",
-                      prefixIcon: Icon(Icons.category),
-                    ),
-                    items: categorias.map((categoria) {
-                      return DropdownMenuItem<String>(
-                        value: categoria["nombre"],
-                        child: Text(categoria["nombre"].toString()),
-                      );
-                    }).toList(),
-                    onChanged: (valor) {
-                      categoriaSeleccionada = valor;
-                    },
-                  );
-                },
-              ),
-              SizedBox(height: 20),
-              //Autor
-              TextFormField(
-                controller: autorCtrl,
-                decoration: InputDecoration(labelText: "Autor", prefixIcon: Icon(Icons.person)),
-                validator: (autor) {
-                  if (autor!.isEmpty) {
-                    return "Ingresa el autor";
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 12),
-              SizedBox(
-                height: 48,
-                child: FilledButton(
-                  style: FilledButton.styleFrom(backgroundColor: Colors.red.shade900),
-                  onPressed: () async {
-                    if (formKey.currentState!.validate()) {
-                      if (fechaSeleccionada == null) {
-                        ScaffoldMessenger.of(
-                          context,
-                        ).showSnackBar(SnackBar(content: Text("Selecciona la fecha del evento")));
-                        return;
-                      }
-                      await FsService().agregarEvento(
-                        tituloCtrl.text.trim(),
-                        fechaSeleccionada!,
-                        categoriaSeleccionada!,
-                        lugarCtrl.text.trim(),
-                        autorCtrl.text.trim(),
-                      );
-                      Navigator.pop(context);
+                  validator: (titulo) {
+                    if (titulo!.isEmpty) {
+                      return "Ingresa el título";
                     }
+                    return null;
                   },
-                  child: Text(
-                    "Guardar evento",
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 16),
+                //Fecha
+                InkWell(
+                  onTap: pickFecha,
+                  borderRadius: BorderRadius.circular(12),
+                  child: InputDecorator(
+                    decoration: InputDecoration(
+                      labelText: "Fecha",
+                      prefixIcon: Icon(Icons.event),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
+                    child: Text(
+                      fechaSeleccionada == null
+                          ? "Toca para seleccionar"
+                          : "${fechaSeleccionada!.day.toString().padLeft(2, "0")}/${fechaSeleccionada!.month.toString().padLeft(2, "0")}/${fechaSeleccionada!.year}",
+                    ),
                   ),
                 ),
-              ),
-            ],
+                SizedBox(height: 16),
+                //Lugar
+                TextFormField(
+                  controller: lugarCtrl,
+                  decoration: InputDecoration(
+                    labelText: "Lugar",
+                    prefixIcon: Icon(Icons.place),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  ),
+                  validator: (lugar) {
+                    if (lugar!.isEmpty) {
+                      return "Ingresa el lugar";
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16),
+
+                //Categoria
+                FutureBuilder<QuerySnapshot>(
+                  future: FsService().categorias(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData || snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: LinearProgressIndicator());
+                    }
+                    var categorias = snapshot.data!.docs;
+                    return DropdownButtonFormField(
+                      validator: (categoria) {
+                        if (categoriaSeleccionada == null) {
+                          return "Selecciona una categoría";
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        labelText: "Categoría",
+                        prefixIcon: Icon(Icons.category),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                      items: categorias.map((categoria) {
+                        return DropdownMenuItem<String>(
+                          value: categoria["nombre"],
+                          child: Text(categoria["nombre"].toString()),
+                        );
+                      }).toList(),
+                      onChanged: (valor) {
+                        categoriaSeleccionada = valor;
+                      },
+                    );
+                  },
+                ),
+                SizedBox(height: 16),
+                //Autor
+                TextFormField(
+                  controller: autorCtrl,
+                  decoration: InputDecoration(
+                    labelText: "Autor",
+                    prefixIcon: Icon(Icons.person),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  ),
+                  validator: (autor) {
+                    if (autor!.isEmpty) {
+                      return "Ingresa el autor";
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16),
+                SizedBox(
+                  height: 48,
+                  child: FilledButton(
+                    style: FilledButton.styleFrom(backgroundColor: Colors.red.shade900),
+                    onPressed: () async {
+                      if (formKey.currentState!.validate()) {
+                        if (fechaSeleccionada == null) {
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text("Selecciona la fecha del evento")));
+                          return;
+                        }
+                        await FsService().agregarEvento(
+                          tituloCtrl.text.trim(),
+                          fechaSeleccionada!,
+                          categoriaSeleccionada!,
+                          lugarCtrl.text.trim(),
+                          autorCtrl.text.trim(),
+                        );
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: Text(
+                      "Guardar evento",
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

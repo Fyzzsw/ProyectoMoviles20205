@@ -56,65 +56,100 @@ class HomePage extends StatelessWidget {
             //body
           ),
           Expanded(
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: StreamBuilder(
-                stream: FsService().eventos(),
-                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    return Center(child: Text("No hay eventos"));
-                  }
-                  return ListView.separated(
-                    separatorBuilder: (context, index) => Divider(),
-                    itemCount: snapshot.data!.docs.length,
-                    itemBuilder: (context, index) {
-                      var evento = snapshot.data!.docs[index];
-                      return Slidable(
-                        endActionPane: ActionPane(
-                          motion: ScrollMotion(),
-                          children: [
-                            SlidableAction(
-                              onPressed: (context) async {
-                                var confirmar = await UtilConfirmacion.mostrarDialogoConfirmacion(
-                                  context,
-                                  "Confirmar eliminación",
-                                  "¿Estás seguro de que deseas eliminar este evento?",
-                                );
-                                if (confirmar) {
-                                  await FsService().eliminarEvento(evento.id);
-                                }
-                              },
-                              icon: MdiIcons.trashCan,
-                              foregroundColor: Colors.white,
-                              backgroundColor: Colors.red,
-                            ),
-                          ],
-                        ),
-                        child: ListTile(
-                          onTap: () async {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DetalleEvento(eventId: evento.id),
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(image: AssetImage('assets/home.jpg'), fit: BoxFit.cover),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: StreamBuilder(
+                  stream: FsService().eventos(),
+                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                      return Center(child: Text("No hay eventos"));
+                    }
+                    return ListView.separated(
+                      separatorBuilder: (context, index) => SizedBox(height: 5),
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        var evento = snapshot.data!.docs[index];
+                        return Slidable(
+                          endActionPane: ActionPane(
+                            motion: ScrollMotion(),
+                            children: [
+                              SlidableAction(
+                                onPressed: (context) async {
+                                  var confirmar = await UtilConfirmacion.mostrarDialogoConfirmacion(
+                                    context,
+                                    "Confirmar eliminación",
+                                    "¿Estás seguro de que deseas eliminar este evento?",
+                                  );
+                                  if (confirmar) {
+                                    await FsService().eliminarEvento(evento.id);
+                                  }
+                                },
+                                icon: MdiIcons.trashCan,
+                                foregroundColor: Colors.white,
+                                backgroundColor: Colors.red,
                               ),
-                            );
-                          },
-                          leading: Icon(Icons.event, color: Colors.red.shade900),
-                          title: Text(evento["titulo"]),
-                          subtitle: Text(
-                            DateFormat(
-                              "dd/MM/yyyy HH:mm",
-                              "es_CL",
-                            ).format(evento["fecha"].toDate()),
+                            ],
                           ),
-                        ),
-                      );
-                    },
-                  );
-                },
+                          child: Card(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            child: ListTile(
+                              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                              onTap: () async {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetalleEvento(eventId: evento.id),
+                                  ),
+                                );
+                              },
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.red.shade100,
+                                child: Icon(Icons.event, color: Colors.red.shade900),
+                              ),
+                              title: Text(
+                                evento["titulo"],
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Chip(
+                                    label: Text(evento["categoria"].toString()),
+                                    backgroundColor: Colors.red.shade50,
+                                    visualDensity: VisualDensity(horizontal: -4, vertical: -4),
+                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    padding: EdgeInsets.zero,
+                                  ),
+                                  SizedBox(height: 5),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.schedule, size: 16, color: Colors.grey.shade600),
+                                      Text(
+                                        DateFormat(
+                                          'dd/MM/yyyy HH:mm',
+                                          'es_CL',
+                                        ).format(evento["fecha"].toDate()),
+                                        style: TextStyle(color: Colors.grey.shade700),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              trailing: Icon(Icons.chevron_right, color: Colors.grey.shade600),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
               ),
             ),
           ),
@@ -122,14 +157,15 @@ class HomePage extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: 30),
-        child: FloatingActionButton(
+        padding: EdgeInsets.only(bottom: 24),
+        child: FloatingActionButton.extended(
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) => AgregarEvento()));
           },
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.red.shade700,
           foregroundColor: Colors.white,
-          child: Icon(Icons.add),
+          icon: Icon(Icons.add),
+          label: Text("Nuevo evento"),
         ),
       ),
     );

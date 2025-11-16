@@ -1,4 +1,3 @@
-import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
 import "package:proyecto_moviles_fernandoramirez2025/services/auth_service.dart";
 
@@ -10,131 +9,88 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final TextEditingController emailCtrl = TextEditingController();
-  final TextEditingController passCtrl = TextEditingController();
-  String msgError = "";
-
-  @override
-  void dispose() {
-    emailCtrl.dispose();
-    passCtrl.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red.shade100,
       body: Container(
-        padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Colors.red.shade100, Colors.red.shade900],
-          ),
+          image: DecorationImage(image: AssetImage('assets/login.jpg'), fit: BoxFit.cover),
         ),
-        child: Padding(
-          padding: EdgeInsets.all(60),
-          child: Form(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextFormField(
-                  controller: emailCtrl,
-                  decoration: InputDecoration(
-                    labelText: "Email",
-                    labelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                TextFormField(
-                  controller: passCtrl,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: "Contraseña",
-                    labelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Column(
-                  children: [
-                    // Container(
-                    //   padding: EdgeInsets.only(top: 10),
-                    //   width: double.infinity,
-                    //   child: FilledButton(
-                    //     style: ButtonStyle(
-                    //       backgroundColor: WidgetStatePropertyAll(Colors.red.shade900),
-                    //     ),
-
-                    //     onPressed: () async {
-                    //       try {
-                    //         await FirebaseAuth.instance.signInWithEmailAndPassword(
-                    //           email: emailCtrl.text.trim(),
-                    //           password: passCtrl.text.trim(),
-                    //         );
-                    //       } on FirebaseAuthException catch (ex) {
-                    //         setState(() {
-                    //           switch (ex.code) {
-                    //             case "channel-error":
-                    //               msgError = "Ingrese sus credenciales";
-                    //               break;
-                    //             case "invalid-email":
-                    //               msgError = "Email no válido";
-                    //               break;
-                    //             case "invalid-credential":
-                    //               msgError = "Credenciales no válidas";
-                    //               break;
-                    //             case "user-disabled":
-                    //               msgError = "Usuario deshabilitado";
-                    //               break;
-                    //             case "too-many-requests":
-                    //               msgError =
-                    //                   "Demasiados intentos. Bloqueado temporalmente, espera y vuelve a intentar.";
-                    //               break;
-                    //             default:
-                    //               msgError = "Error desconocido";
-                    //           }
-                    //         });
-                    //       }
-                    //     },
-                    //     child: Text(
-                    //       "Iniciar Sesión",
-                    //       style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                    //     ),
-                    //   ),
-                    // ),
-
-                    //boton de google
-                    FilledButton(
-                      style: ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll(Colors.red.shade900),
-                      ),
-                      onPressed: () async {
-                        try {
-                          final userCredential = await AuthService().signInWithGoogle();
-
-                          if (userCredential != null) {}
-                        } catch (ex) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("Error al iniciar sesión con Google: $ex")),
-                          );
-                        }
-                      },
-                      child: Row(
-                        children: [
-                          Icon(Icons.login_rounded),
-                          SizedBox(width: 8),
-                          Text("Inicie sesion con google"),
-                        ],
-                      ),
+        child: SafeArea(
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(),
+                child: Card(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CircleAvatar(
+                          radius: 35,
+                          backgroundColor: Colors.red.shade100,
+                          child: Icon(Icons.event, color: Colors.red.shade800, size: 35),
+                        ),
+                        SizedBox(height: 15),
+                        Text(
+                          "Eventos",
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.red.shade900,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          "Publica y descubre eventos",
+                          style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
+                        ),
+                        SizedBox(height: 20),
+                        Divider(),
+                        SizedBox(height: 20),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 48,
+                          child: OutlinedButton.icon(
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: Colors.black87,
+                              backgroundColor: Colors.white,
+                              side: BorderSide(color: Colors.grey.shade300),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            onPressed: () async {
+                              try {
+                                await AuthService().signInWithGoogle();
+                              } catch (ex) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("No se pudo iniciar sesión: $ex")),
+                                );
+                              }
+                            },
+                            icon: Icon(Icons.login_rounded, color: Colors.red.shade700),
+                            label: Text(
+                              "Continuar con Google",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "Usaremos tu cuenta de Gmail para ingresar",
+                          style: TextStyle(fontSize: 15, color: Colors.grey.shade600),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-                Container(
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  child: Text(msgError, style: TextStyle(color: Colors.white, fontSize: 16)),
-                ),
-              ],
+              ),
             ),
           ),
         ),

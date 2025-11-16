@@ -13,6 +13,16 @@ class FsService {
     return FirebaseFirestore.instance.collection("categorias").orderBy("nombre").get();
   }
 
+  Future<DocumentSnapshot<Map<String, dynamic>>?> categoriaPorNombre(String nombre) async {
+    final query = await FirebaseFirestore.instance
+        .collection("categorias")
+        .where("nombre", isEqualTo: nombre)
+        .limit(1)
+        .get();
+    if (query.docs.isEmpty) return null;
+    return query.docs.first;
+  }
+
   Future<void> agregarEvento(
     String titulo,
     DateTime fecha,

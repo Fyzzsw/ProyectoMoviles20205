@@ -37,9 +37,9 @@ class DetalleEvento extends StatelessWidget {
                       : "Desconocido";
 
                   return Card(
-                    elevation: 4,
+                    elevation: 5,
                     child: Padding(
-                      padding: EdgeInsets.all(16.0),
+                      padding: EdgeInsets.all(15.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -61,25 +61,25 @@ class DetalleEvento extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
+                                    borderRadius: BorderRadius.circular(10),
                                     child: Image.asset(
                                       "assets/categorias/" + base + ".jpg",
-                                      width: 64,
-                                      height: 64,
+                                      width: 65,
+                                      height: 65,
                                       fit: BoxFit.cover,
                                       errorBuilder: (context, error, stackTrace) => Image.asset(
                                         "assets/categorias/" + base + ".jpg",
-                                        width: 64,
-                                        height: 64,
+                                        width: 65,
+                                        height: 65,
                                         fit: BoxFit.cover,
                                         errorBuilder: (context, error, stackTrace) => Image.asset(
                                           "assets/categorias/" + base + ".jpeg",
-                                          width: 64,
-                                          height: 64,
+                                          width: 65,
+                                          height: 65,
                                           fit: BoxFit.cover,
                                           errorBuilder: (context, error, stackTrace) => Container(
-                                            width: 64,
-                                            height: 64,
+                                            width: 65,
+                                            height: 65,
                                             color: Colores.ksecondary,
                                             child: Icon(
                                               Icons.image_not_supported,
@@ -98,15 +98,15 @@ class DetalleEvento extends StatelessWidget {
                                         Text(
                                           eventoData["titulo"],
                                           style: TextStyle(
-                                            fontSize: 22,
+                                            fontSize: 20,
                                             fontWeight: FontWeight.bold,
                                             color: Colores.kaccent,
                                           ),
                                         ),
-                                        SizedBox(height: 4),
+                                        SizedBox(height: 5),
                                         Text(
                                           "Categoría: ${eventoData["categoria"]}",
-                                          style: TextStyle(fontSize: 14, color: Colores.ksecondary),
+                                          style: TextStyle(fontSize: 15, color: Colores.ksecondary),
                                         ),
                                       ],
                                     ),
@@ -115,28 +115,33 @@ class DetalleEvento extends StatelessWidget {
                               );
                             },
                           ),
-                          Divider(height: 24),
+                          Divider(height: 25),
                           Row(
                             children: [
                               Icon(Icons.person_outline, color: Colores.kaccent),
-                              SizedBox(width: 8),
-                              Text("Autor: ${eventoData["autor"]}", style: TextStyle(fontSize: 16)),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  "Autor: ${eventoData["autor"]}",
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                              ),
                             ],
                           ),
                           SizedBox(height: 12),
                           Row(
                             children: [
                               Icon(Icons.location_on_outlined, color: Colores.kaccent),
-                              SizedBox(width: 8),
-                              Text("Lugar: ${eventoData["lugar"]}", style: TextStyle(fontSize: 16)),
+                              SizedBox(width: 10),
+                              Text("Lugar: ${eventoData["lugar"]}", style: TextStyle(fontSize: 15)),
                             ],
                           ),
                           SizedBox(height: 12),
                           Row(
                             children: [
                               Icon(Icons.calendar_today_outlined, color: Colores.kaccent),
-                              SizedBox(width: 8),
-                              Text("Fecha: $fechaFmt", style: TextStyle(fontSize: 16)),
+                              SizedBox(width: 10),
+                              Text("Fecha: $fechaFmt", style: TextStyle(fontSize: 15)),
                             ],
                           ),
                         ],

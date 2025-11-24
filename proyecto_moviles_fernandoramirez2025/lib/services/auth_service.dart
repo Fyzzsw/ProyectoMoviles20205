@@ -11,6 +11,9 @@ class AuthService {
 
   Future<UserCredential?> signInWithGoogle() async {
     try {
+      //Forzar el diálogo de selección de cuenta cerrando cualquier sesión previa
+      await GoogleSignIn().signOut();
+
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
       if (googleUser == null) return null;

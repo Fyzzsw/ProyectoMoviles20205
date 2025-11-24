@@ -1,5 +1,6 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:flutter/material.dart";
+import "package:proyecto_moviles_fernandoramirez2025/constantes.dart";
 import "package:proyecto_moviles_fernandoramirez2025/services/fs_service.dart";
 
 class AgregarEvento extends StatefulWidget {
@@ -36,9 +37,9 @@ class _AgregarEventoState extends State<AgregarEvento> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red.shade900,
-        title: Text("Agregar evento", style: TextStyle(color: Colors.white)),
-        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: Colores.kprimary,
+        title: Text("Agregar evento", style: TextStyle(color: Colores.ktext)),
+        iconTheme: IconThemeData(color: Colores.ktext),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -153,7 +154,7 @@ class _AgregarEventoState extends State<AgregarEvento> {
                 SizedBox(
                   height: 48,
                   child: FilledButton(
-                    style: FilledButton.styleFrom(backgroundColor: Colors.red.shade900),
+                    style: FilledButton.styleFrom(backgroundColor: Colores.kprimary),
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
                         if (fechaSeleccionada == null) {
@@ -174,7 +175,7 @@ class _AgregarEventoState extends State<AgregarEvento> {
                     },
                     child: Text(
                       "Guardar evento",
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      style: TextStyle(color: Colores.ktext, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),

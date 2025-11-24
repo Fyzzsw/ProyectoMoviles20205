@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:proyecto_moviles_fernandoramirez2025/constantes.dart";
 import "package:proyecto_moviles_fernandoramirez2025/services/auth_service.dart";
 
 class Login extends StatefulWidget {
@@ -33,8 +34,8 @@ class _LoginState extends State<Login> {
                       children: [
                         CircleAvatar(
                           radius: 35,
-                          backgroundColor: Colors.red.shade100,
-                          child: Icon(Icons.event, color: Colors.red.shade800, size: 35),
+                          backgroundColor: Colores.kprimary,
+                          child: Icon(Icons.event, color: Colores.kaccent, size: 35),
                         ),
                         SizedBox(height: 15),
                         Text(
@@ -42,13 +43,13 @@ class _LoginState extends State<Login> {
                           style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.w700,
-                            color: Colors.red.shade900,
+                            color: Colores.kprimary,
                           ),
                         ),
                         SizedBox(height: 5),
                         Text(
                           "Publica y descubre eventos",
-                          style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
+                          style: TextStyle(fontSize: 14, color: Colores.ksecondary),
                         ),
                         SizedBox(height: 20),
                         Divider(),
@@ -58,9 +59,9 @@ class _LoginState extends State<Login> {
                           height: 48,
                           child: OutlinedButton.icon(
                             style: OutlinedButton.styleFrom(
-                              foregroundColor: Colors.black87,
-                              backgroundColor: Colors.white,
-                              side: BorderSide(color: Colors.grey.shade300),
+                              foregroundColor: Colores.kprimary,
+                              backgroundColor: Colores.kbackground,
+                              side: BorderSide(color: Colores.ksecondary),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -74,7 +75,7 @@ class _LoginState extends State<Login> {
                                 );
                               }
                             },
-                            icon: Icon(Icons.login_rounded, color: Colors.red.shade700),
+                            icon: Icon(Icons.login_rounded, color: Colores.kprimary),
                             label: Text(
                               "Continuar con Google",
                               style: TextStyle(fontWeight: FontWeight.bold),
@@ -84,7 +85,7 @@ class _LoginState extends State<Login> {
                         SizedBox(height: 10),
                         Text(
                           "Usaremos tu cuenta de Gmail para ingresar",
-                          style: TextStyle(fontSize: 15, color: Colors.grey.shade600),
+                          style: TextStyle(fontSize: 15, color: Colores.ksecondary),
                         ),
                       ],
                     ),

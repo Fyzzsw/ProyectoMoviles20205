@@ -1,6 +1,7 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:flutter/material.dart";
 import "package:intl/intl.dart";
+import "package:proyecto_moviles_fernandoramirez2025/constantes.dart";
 import "package:proyecto_moviles_fernandoramirez2025/services/fs_service.dart";
 
 class DetalleEvento extends StatelessWidget {
@@ -11,9 +12,9 @@ class DetalleEvento extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red.shade900,
-        title: Text("Detalle del Evento", style: TextStyle(color: Colors.white)),
-        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: Colores.kprimary,
+        title: Text("Detalle del Evento", style: TextStyle(color: Colores.ktext)),
+        iconTheme: IconThemeData(color: Colores.ktext),
       ),
       body: Expanded(
         child: Container(
@@ -79,10 +80,10 @@ class DetalleEvento extends StatelessWidget {
                                           errorBuilder: (context, error, stackTrace) => Container(
                                             width: 64,
                                             height: 64,
-                                            color: Colors.grey.shade300,
+                                            color: Colores.ksecondary,
                                             child: Icon(
                                               Icons.image_not_supported,
-                                              color: Colors.grey.shade700,
+                                              color: Colores.ksecondary,
                                             ),
                                           ),
                                         ),
@@ -99,16 +100,13 @@ class DetalleEvento extends StatelessWidget {
                                           style: TextStyle(
                                             fontSize: 22,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.red,
+                                            color: Colores.kaccent,
                                           ),
                                         ),
                                         SizedBox(height: 4),
                                         Text(
                                           "Categoría: ${eventoData["categoria"]}",
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.grey.shade600,
-                                          ),
+                                          style: TextStyle(fontSize: 14, color: Colores.ksecondary),
                                         ),
                                       ],
                                     ),
@@ -120,7 +118,7 @@ class DetalleEvento extends StatelessWidget {
                           Divider(height: 24),
                           Row(
                             children: [
-                              Icon(Icons.person_outline, color: Colors.red),
+                              Icon(Icons.person_outline, color: Colores.kaccent),
                               SizedBox(width: 8),
                               Text("Autor: ${eventoData["autor"]}", style: TextStyle(fontSize: 16)),
                             ],
@@ -128,7 +126,7 @@ class DetalleEvento extends StatelessWidget {
                           SizedBox(height: 12),
                           Row(
                             children: [
-                              Icon(Icons.location_on_outlined, color: Colors.red),
+                              Icon(Icons.location_on_outlined, color: Colores.kaccent),
                               SizedBox(width: 8),
                               Text("Lugar: ${eventoData["lugar"]}", style: TextStyle(fontSize: 16)),
                             ],
@@ -136,7 +134,7 @@ class DetalleEvento extends StatelessWidget {
                           SizedBox(height: 12),
                           Row(
                             children: [
-                              Icon(Icons.calendar_today_outlined, color: Colors.red),
+                              Icon(Icons.calendar_today_outlined, color: Colores.kaccent),
                               SizedBox(width: 8),
                               Text("Fecha: $fechaFmt", style: TextStyle(fontSize: 16)),
                             ],
